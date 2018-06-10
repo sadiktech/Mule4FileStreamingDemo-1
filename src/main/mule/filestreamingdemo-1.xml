@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ftp="http://www.mulesoft.org/schema/mule/ftp" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:file="http://www.mulesoft.org/schema/mule/file"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/ftp http://www.mulesoft.org/schema/mule/ftp/current/mule-ftp.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="71ff83ab-6d0e-42d0-a57a-b5c32ade03e9" >
+		<http:listener-connection host="0.0.0.0" port="8083" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="a3716edd-7545-41c9-84a7-dd56b2b922f9" >
+		<file:connection workingDir="D:\Mule-Study\anypoint7workspace\filestreamingdemo-1" />
+	</file:config>
+	<file:config name="File_Config1" doc:name="File Config" doc:id="3311460d-7521-4459-be33-a3a365886d12" />
+	<flow name="filestreamingdemo-1Flow" doc:id="bca7f17f-13c2-4ab5-abbd-ff03c3853e4d" >
+		<http:listener doc:name="Listener" doc:id="24428630-ffc6-446d-b22e-9712be9ae86d" config-ref="HTTP_Listener_config" allowedMethods="POST" path="/FileStreaming">
+			<repeatable-in-memory-stream />
+		</http:listener>
+		<file:write doc:name="Write" doc:id="0829cae4-4704-4022-a2bf-db5ff4bc35c4" path="src\main\resources\outPutFile\sampleFile.txt" config-ref="File_Config"/>
+		<logger level="INFO" doc:name="Logger" doc:id="a263a184-9a31-46c2-ba54-20b5efdc4eb5" message="Before  File connector : ------------- #[payload]" />
+		<logger level="INFO" doc:name="Logger" doc:id="5afa8ed1-365e-4cae-ab51-d5c85542dabb" message="After File connector : ------------- #[payload]"/>
+		<file:write doc:name="Write" doc:id="63e8e761-be32-4cd9-9e1e-5396277eabb1" config-ref="File_Config" path="src\main\resources\outPutFile\sampleFile1.txt"/>
+	</flow>
+</mule>
